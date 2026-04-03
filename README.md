@@ -1,6 +1,43 @@
-# Anthropic Employee-Level Instructions for Any AI Coding Agent
+<div align="center">
 
-> Bring the internal Anthropic employee ("ant") quality gates into **GitHub Copilot (VS Code + CLI)**, **Claude Code**, and any open-source coding agent.
+# 🔓 Anthropic Employee-Level Instructions
+
+### For Any AI Coding Agent — Everywhere
+
+<br>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tools Supported](https://img.shields.io/badge/Tools%20Supported-17%2B-blue)](#tool-compatibility-matrix)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Ready-blueviolet)](#4-claude-code)
+[![Copilot](https://img.shields.io/badge/GitHub%20Copilot-Ready-green)](#1-vs-code--github-copilot)
+[![Cursor](https://img.shields.io/badge/Cursor-Ready-orange)](#5-cursor)
+[![ChatGPT](https://img.shields.io/badge/ChatGPT-Ready-brightgreen)](#10-chatgpt-web-ui)
+
+<br>
+
+> **Bring the internal Anthropic employee ("ant") quality gates into GitHub Copilot, Claude Code, Cursor, ChatGPT, Gemini, Grok, and 17+ AI coding tools.**
+
+<br>
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║   Regular User Path        vs      Employee ("ant") Path     ║
+║                                                              ║
+║   🚕 Longer route                  🏎️  Direct route          ║
+║   💬 More hedging                  ✅ Honest & direct         ║
+║   🔄 "Can you test?"              🔧 Self-verifies           ║
+║   ❌ May fake "tests pass"         📊 Faithful reporting      ║
+║   🐌 Token-heavy detours           ⚡ Minimal turns           ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+**This repo gives you the direct route.**
+
+</div>
+
+<br>
 
 ---
 
