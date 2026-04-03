@@ -746,6 +746,114 @@ If you run [Gitlawb/openclaude](https://github.com/Gitlawb/openclaude) locally, 
 
 <div align="center"><img src="assets/wave-divider.svg" width="100%"/></div>
 
+## 🤖 OpenClaude Copilot CLI (Coding Agent)
+
+> **Based on [Gitlawb/openclaude](https://github.com/Gitlawb/openclaude)** — rebuilt from scratch with **zero telemetry** and GitHub Copilot support.
+
+This repo includes a **fully functional AI coding agent CLI** inspired by OpenClaude's architecture. It uses the Anthropic employee-level rules as its system prompt and supports GitHub Models, OpenAI, Ollama, and any OpenAI-compatible API.
+
+### Why a Clean Rebuild (Not a Fork)?
+
+We audited the full OpenClaude codebase (~8.2k stars, 99.9% TypeScript, 177+ dependencies) and found:
+
+| Finding | Severity | Details |
+|---|---|---|
+| **Extensive telemetry** | ⚠️ High | GrowthBook, OpenTelemetry, Statsig — sends usage data, feature flags, startup metrics to remote servers |
+| **Session data uploader** | ⚠️ High | Uploads session data for internal "ant" users (gated but present in code) |
+| **OAuth token storage** | ℹ️ Medium | Stores tokens in macOS Keychain / OS credential store |
+| **Remote connectivity** | ℹ️ Medium | Teleport sessions, remote control mode, SSH execution |
+| **No malware** | ✅ Clean | No intentional data theft. All telemetry is for Anthropic's analytics. |
+
+**Our CLI strips all of this.** Zero analytics, zero phone-home, zero tracking. Just a clean agent loop with tool calling.
+
+### Features
+
+- 🔧 **Tool calling**: bash, file read/write/edit, grep, directory listing
+- 🌊 **Streaming responses**: Real-time token output
+- 🔄 **Multi-turn tool loops**: Agent autonomously chains tool calls (KAIROS-style)
+- 🛡️ **Dangerous command blocking**: Prevents `rm -rf /`, fork bombs, etc.
+- 🔌 **Multi-provider**: GitHub Models, OpenAI, Ollama, any OpenAI-compatible API
+- 📝 **Anthropic employee-level rules**: Baked into the system prompt
+- 🚫 **Zero telemetry**: Nothing phones home. Ever.
+
+### Quick Start
+
+```bash
+# Install
+cd cli && npm install
+
+# Option 1: GitHub Copilot / GitHub Models (free with Copilot subscription)
+export GITHUB_TOKEN=$(gh auth token)
+node cli/src/index.mjs
+
+# Option 2: OpenAI
+export OPENAI_API_KEY=sk-your-key
+node cli/src/index.mjs
+
+# Option 3: Ollama (local, free)
+OPENCLAUDE_PROVIDER=ollama node cli/src/index.mjs
+
+# Option 4: Any OpenAI-compatible API
+export OPENAI_BASE_URL=https://your-api.example.com/v1
+export OPENAI_API_KEY=your-key
+node cli/src/index.mjs
+```
+
+**Windows PowerShell:**
+```powershell
+cd cli; npm install
+$env:GITHUB_TOKEN = (gh auth token)
+node cli\src\index.mjs
+```
+
+### CLI Usage
+
+```
+openclaude-copilot [options] [initial prompt]
+
+Options:
+  --help, -h              Show help
+  --model <model>         Override the model (e.g., gpt-4o, gpt-4.1)
+  --provider <provider>   Force provider: github, openai, ollama, custom
+  --version, -v           Show version
+
+Slash Commands (inside the REPL):
+  /help              Show available commands
+  /clear             Clear conversation history
+  /model <name>      Switch model
+  /compact           Compact conversation to save context
+  /status            Show session info
+  /quit              Exit
+```
+
+### Supported Models (GitHub Models)
+
+| Model | Notes |
+|---|---|
+| `gpt-4o` | Default. Best balance of speed and quality. |
+| `gpt-4.1` | Latest GPT-4 series. Strong tool calling. |
+| `gpt-4.1-mini` | Faster, cheaper. Good for quick tasks. |
+| `o4-mini` | OpenAI reasoning model. |
+| `DeepSeek-R1` | Available via GitHub Models marketplace. |
+
+### Architecture
+
+The CLI implements the same agent loop as OpenClaude:
+
+```
+User Input → LLM (with tools) → Tool Calls → Execute → Results → LLM → ...
+```
+
+Key files:
+- `cli/src/index.mjs` — REPL entry point and slash commands
+- `cli/src/agent.mjs` — Agent loop with streaming and tool calling
+- `cli/src/tools.mjs` — Tool definitions (bash, file ops, grep) and execution
+- `cli/src/config.mjs` — Provider auto-detection and configuration
+- `cli/src/prompt.mjs` — System prompt with Anthropic employee-level rules
+- `cli/src/ui.mjs` — Terminal UI (colors, spinner, formatting)
+
+<div align="center"><img src="assets/wave-divider.svg" width="100%"/></div>
+
 ## 🗂️ Repo Structure
 
 ```
@@ -760,6 +868,17 @@ anthropic-instructions/
 │       └── anthropic-rules.md     # Continue.dev
 ├── .clinerules/
 │   └── anthropic-rules.md         # Cline (additional rules)
+├── cli/                           # OpenClaude Copilot CLI (coding agent)
+│   ├── bin/
+│   │   └── openclaude-copilot.mjs # Entry point
+│   ├── src/
+│   │   ├── index.mjs              # REPL and arg parsing
+│   │   ├── agent.mjs              # Agent loop with tool calling
+│   │   ├── tools.mjs              # Tool definitions and execution
+│   │   ├── config.mjs             # Provider detection and config
+│   │   ├── prompt.mjs             # System prompt (employee-level rules)
+│   │   └── ui.mjs                 # Terminal UI and formatting
+│   └── package.json               # Single dependency: openai
 ├── universal/
 │   ├── system-prompt.txt          # Plain text (ChatGPT, JetBrains, etc.)
 │   └── system-prompt.json         # JSON (OpenAI, Gemini, Grok API)

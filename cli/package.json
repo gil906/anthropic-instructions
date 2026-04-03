@@ -1,0 +1,33 @@
+{
+  "name": "openclaude-copilot",
+  "version": "1.0.0",
+  "description": "Open-source coding-agent CLI based on OpenClaude, powered by GitHub Copilot / GitHub Models. Zero telemetry.",
+  "type": "module",
+  "bin": {
+    "openclaude-copilot": "./bin/openclaude-copilot.mjs"
+  },
+  "scripts": {
+    "start": "node src/index.mjs",
+    "dev": "node --watch src/index.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "openai": "^4.73.0"
+  },
+  "keywords": [
+    "cli",
+    "coding-agent",
+    "github-copilot",
+    "github-models",
+    "openai",
+    "ai-agent",
+    "openclaude"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthropic-instructions/anthropic-instructions"
+  }
+}
