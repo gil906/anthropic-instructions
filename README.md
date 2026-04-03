@@ -52,36 +52,80 @@ This repo packages the **employee-tier rules** so you can inject them into any A
 
 ---
 
-## What Employees Get That Regular Users Don't
+## 🔍 What Employees Get That Regular Users Don't
 
 The leaked source gates three major instruction blocks behind `USER_TYPE === 'ant'`:
 
-### 1. Misconception Handling
+```mermaid
+graph LR
+    A[USER_TYPE check] -->|"=== 'ant'"| B["🟢 Employee Path"]
+    A -->|"!== 'ant'"| C["🔴 Regular Path"]
+    B --> D["✅ Misconception Handling"]
+    B --> E["✅ Faithful Reporting"]
+    B --> F["✅ Verification Before Done"]
+    B --> G["✅ KAIROS Autonomy"]
+    C --> H["❌ Softer hedging"]
+    C --> I["❌ May fake success"]
+    C --> J["❌ Skips verification"]
+    C --> K["❌ Asks user to test"]
+
+    style B fill:#22c55e,color:#fff
+    style C fill:#ef4444,color:#fff
+    style D fill:#86efac
+    style E fill:#86efac
+    style F fill:#86efac
+    style G fill:#86efac
+    style H fill:#fca5a5
+    style I fill:#fca5a5
+    style J fill:#fca5a5
+    style K fill:#fca5a5
+```
+
+### 🎯 1. Misconception Handling
 > *"If you notice the user's request is based on a misconception, or spot a bug adjacent to what they asked about, say so."*
 
 Regular users do **not** get this — the model is tuned to avoid discouraging continued usage, so it silently works around misconceptions instead of correcting them.
 
-### 2. Test / Result Honesty
+### 📊 2. Test / Result Honesty
 > *"Report outcomes faithfully: if tests fail, say so with the relevant output. Never claim 'all tests pass' when output shows failures, never suppress or simplify failing checks to manufacture a green result, and never characterize incomplete or broken work as done."*
 
 The internal version forces faithful failure reporting. The regular-user version uses softer language that can lead to premature "success" claims.
 
-### 3. Verification Before Claiming Done
+### ✅ 3. Verification Before Claiming Done
 Employees get stronger verification logic (and in some paths a full verification sub-agent) before the model says "done." Regular users get a looser version that can skip verification steps entirely.
 
-### 4. Autonomy & Self-Fix Loops (KAIROS Mode)
+### 🤖 4. Autonomy & Self-Fix Loops (KAIROS Mode)
+
 The internal version includes **KAIROS-style** autonomous operation:
+
+```mermaid
+flowchart LR
+    A["🎯 Task"] --> B["📝 Plan"]
+    B --> C["⚡ Implement"]
+    C --> D["🔍 Self-Verify"]
+    D -->|Pass| E["✅ Done"]
+    D -->|Fail| F["🔧 Self-Fix"]
+    F --> C
+    F -->|"3 failures"| G["🙋 Ask User"]
+
+    style A fill:#3b82f6,color:#fff
+    style E fill:#22c55e,color:#fff
+    style F fill:#f59e0b,color:#fff
+    style G fill:#ef4444,color:#fff
+```
+
 - After every action, the agent mentally "ticks" and immediately proceeds to the next step
-- Self-diagnosis on failure with up to 3 automatic recovery attempts
+- Self-diagnosis on failure with up to **3 automatic recovery attempts**
 - The agent **never asks the user to test** unless it has already tried 2–3 times itself
 - Proactive tool use (bash, pytest, ruff, docker, git, etc.) to self-verify after every change
 - Minimal turns — plan → implement → verify → fix in as few responses as possible
 
-Other internal-only features include **Undercover Mode** (hiding AI identity when contributing to open-source) and lighter-gated model variants for internal use.
+> [!WARNING]
+> Other internal-only features include **Undercover Mode** (hiding AI identity when contributing to open-source) and lighter-gated model variants for internal use.
 
 ---
 
-## Related Repositories
+## 📦 Related Repositories
 
 | Repository | Stars | Description |
 |---|---|---|
@@ -92,14 +136,14 @@ Other internal-only features include **Undercover Mode** (hiding AI identity whe
 
 > **Key distinction**: `Gitlawb/openclaude` is the only repo that contains the **original leaked prompts and internal logic**. The others are clean-room rewrites or from-scratch alternatives.
 
-### Additional Resources
+### 🔗 Additional Resources
 
 - **Unpacked leak explorer**: [ccunpacked.dev](https://ccunpacked.dev/) — browse the full original leaked source
 - **DeepWiki analysis**: [deepwiki.com/zackautocracy/claude-code](https://deepwiki.com/zackautocracy/claude-code) — detailed wiki of the leaked codebase
 
 ---
 
-## Where to Find the Instructions in the Leaked Source
+## 🔎 Where to Find the Instructions in the Leaked Source
 
 The employee-only instructions live in the **system-prompt construction code**, conditionally inserted when `process.env.USER_TYPE === 'ant'`.
 
@@ -115,11 +159,33 @@ The conditional blocks appear in prompt-construction files (e.g., `src/agent/pro
 
 ---
 
-## What This Repo Provides
+## 📂 What This Repo Provides
 
 This repo contains **ready-to-use instruction files** that inject the full employee-level rule set into your AI coding tools — covering **10 file-based tools** and **7+ UI/API-based tools**:
 
-### File-Based Tools (auto-loaded)
+<div align="center">
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ⚡ Supported Tools ⚡                         │
+├─────────────────┬──────────────────┬────────────────────────────┤
+│  🟢 Auto-Loaded │  🟡 Paste Once   │  🔵 API / Code             │
+├─────────────────┼──────────────────┼────────────────────────────┤
+│  VS Code Copilot│  ChatGPT         │  OpenAI API                │
+│  Copilot CLI    │  JetBrains AI    │  Google Gemini API         │
+│  Copilot Agent  │  Amazon Q        │  Grok / xAI API            │
+│  Claude Code    │  Windsurf        │  Ollama / LM Studio        │
+│  Cursor         │                  │  Any OpenAI-compatible     │
+│  Cline          │                  │                            │
+│  Continue.dev   │                  │                            │
+│  Aider          │                  │                            │
+│  OpenCode       │                  │                            │
+└─────────────────┴──────────────────┴────────────────────────────┘
+```
+
+</div>
+
+### 🛠️ File-Based Tools (auto-loaded)
 
 | File | Tool(s) | How It Works |
 |---|---|---|
@@ -132,7 +198,7 @@ This repo contains **ready-to-use instruction files** that inject the full emplo
 | `.clinerules/anthropic-rules.md` | **Cline** (additional rules) | Extra rules directory |
 | `.aider.conf.yml` | **Aider** | Injects rules via `extra-system-message` config key |
 
-### Universal Copy-Paste (for UI/API-only tools)
+### 📎 Universal Copy-Paste (for UI/API-only tools)
 
 | File | Use For |
 |---|---|
@@ -140,16 +206,44 @@ This repo contains **ready-to-use instruction files** that inject the full emplo
 | `universal/system-prompt.json` | **OpenAI API**, **Google Gemini API**, **Grok/xAI API**, any JSON system message |
 
 Each file contains the same core rules:
-- **Core Rules** — misconception handling, faithful reporting, verification-before-done
-- **Autonomy & Self-Verification** — eliminates "ask me to test" loops
-- **Proactive Autonomous Mode** — KAIROS-style tick-forward autonomy with self-fix recovery
-- **Best Practices** — language-agnostic quality standards
+
+> | Rule | What It Does |
+> |---|---|
+> | 🎯 **Core Rules** | Misconception handling, faithful reporting, verification-before-done |
+> | 🔧 **Autonomy & Self-Verification** | Eliminates "ask me to test" loops |
+> | ⚡ **Proactive Autonomous Mode** | KAIROS-style tick-forward autonomy with self-fix recovery |
+> | 📋 **Best Practices** | Language-agnostic quality standards |
 
 ---
 
-## One-Command Global Setup (Install Once, Works Everywhere)
+## 🌐 One-Command Global Setup (Install Once, Works Everywhere)
 
 Some tools support **global/user-level instructions** that apply to ALL projects without copying files. Run once and every future session uses the employee-level rules automatically.
+
+<div align="center">
+
+```
+              ┌──────────────────────┐
+              │  bash setup-global.sh │
+              └──────────┬───────────┘
+                         │
+              ┌──────────┴───────────┐
+              │                      │
+        ┌─────▼──────┐      ┌───────▼───────┐
+        │ Claude Code │      │    Aider      │
+        │ ~/.claude/  │      │ ~/.aider.conf │
+        │ CLAUDE.md   │      │ .yml          │
+        └─────┬──────┘      └───────┬───────┘
+              │                      │
+              ▼                      ▼
+     ┌────────────────┐    ┌────────────────┐
+     │ ✅ ALL projects │    │ ✅ ALL sessions │
+     │   use rules     │    │   use rules     │
+     │   automatically │    │   automatically │
+     └────────────────┘    └────────────────┘
+```
+
+</div>
 
 ### Claude Code — Global (recommended)
 
@@ -189,7 +283,7 @@ Or via curl:
 curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/main/setup-global.sh | bash
 ```
 
-### Global Setup Compatibility
+### 🔄 Global Setup Compatibility
 
 | Tool | Global Support | One-Command Setup | Config Location |
 |---|---|---|---|
@@ -207,9 +301,13 @@ curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/
 
 ---
 
-## Use Cases
+## 📖 Use Cases
 
-### 1. VS Code + GitHub Copilot
+> [!TIP]
+> Click any tool below to expand its setup instructions.
+
+<details>
+<summary><strong>🟢 1. VS Code + GitHub Copilot</strong></summary>
 
 **File**: `.github/copilot-instructions.md`
 
@@ -222,7 +320,10 @@ your-project/
 └── ...
 ```
 
-### 2. GitHub Copilot CLI
+</details>
+
+<details>
+<summary><strong>🟢 2. GitHub Copilot CLI</strong></summary>
 
 **File**: `.github/copilot-instructions.md`
 
@@ -233,13 +334,19 @@ cd your-project
 gh copilot suggest "refactor the auth module"
 ```
 
-### 3. GitHub Copilot Coding Agent (PR Agent)
+</details>
+
+<details>
+<summary><strong>🟢 3. GitHub Copilot Coding Agent (PR Agent)</strong></summary>
 
 **File**: `AGENTS.md`
 
 When the Copilot coding agent works on pull requests in your repo, it reads `AGENTS.md` from the project root for its operating instructions.
 
-### 4. Claude Code
+</details>
+
+<details>
+<summary><strong>🟣 4. Claude Code</strong></summary>
 
 **File**: `CLAUDE.md`
 
@@ -250,7 +357,12 @@ cd your-project
 claude   # CLAUDE.md is loaded automatically
 ```
 
-### 5. Cursor
+**Global**: You can also install it once for all projects — see [Global Setup](#-one-command-global-setup-install-once-works-everywhere).
+
+</details>
+
+<details>
+<summary><strong>🟠 5. Cursor</strong></summary>
 
 **File**: `.cursor/rules/anthropic-rules.mdc`
 
@@ -264,19 +376,28 @@ your-project/
 └── ...
 ```
 
-### 6. Cline (VS Code Extension)
+</details>
+
+<details>
+<summary><strong>🔵 6. Cline (VS Code Extension)</strong></summary>
 
 **Files**: `CLAUDE.md` + `.clinerules/anthropic-rules.md`
 
 Cline reads `CLAUDE.md` from the project root and also loads any files in `.clinerules/`. Both are included for maximum coverage.
 
-### 7. Continue.dev
+</details>
+
+<details>
+<summary><strong>🔵 7. Continue.dev</strong></summary>
 
 **File**: `.continue/rules/anthropic-rules.md`
 
 Continue.dev loads project rules from `.continue/rules/`. The YAML frontmatter provides the rule name and description.
 
-### 8. Aider
+</details>
+
+<details>
+<summary><strong>🟢 8. Aider</strong></summary>
 
 **File**: `.aider.conf.yml`
 
@@ -287,13 +408,21 @@ cd your-project
 aider   # rules are injected automatically
 ```
 
-### 9. OpenCode
+**Global**: You can also install it once for all projects — see [Global Setup](#-one-command-global-setup-install-once-works-everywhere).
+
+</details>
+
+<details>
+<summary><strong>🟢 9. OpenCode</strong></summary>
 
 **File**: `AGENTS.md`
 
 OpenCode reads `AGENTS.md` from the project root (same file as GitHub Copilot Coding Agent).
 
-### 10. ChatGPT (Web UI)
+</details>
+
+<details>
+<summary><strong>🟡 10. ChatGPT (Web UI)</strong></summary>
 
 **File**: `universal/system-prompt.txt`
 
@@ -304,7 +433,10 @@ OpenCode reads `AGENTS.md` from the project root (same file as GitHub Copilot Co
 
 All future conversations will use the employee-level rules.
 
-### 11. OpenAI API / ChatGPT API
+</details>
+
+<details>
+<summary><strong>🔵 11. OpenAI API / ChatGPT API</strong></summary>
 
 **File**: `universal/system-prompt.json`
 
@@ -324,7 +456,10 @@ response = client.chat.completions.create(
 )
 ```
 
-### 12. Google Gemini API
+</details>
+
+<details>
+<summary><strong>🔵 12. Google Gemini API</strong></summary>
 
 **File**: `universal/system-prompt.txt`
 
@@ -338,7 +473,10 @@ model = genai.GenerativeModel(
 )
 ```
 
-### 13. Grok / xAI API
+</details>
+
+<details>
+<summary><strong>🔵 13. Grok / xAI API</strong></summary>
 
 **File**: `universal/system-prompt.json`
 
@@ -358,7 +496,10 @@ response = client.chat.completions.create(
 )
 ```
 
-### 14. JetBrains AI Assistant
+</details>
+
+<details>
+<summary><strong>🟡 14. JetBrains AI Assistant</strong></summary>
 
 **File**: `universal/system-prompt.txt`
 
@@ -367,7 +508,10 @@ response = client.chat.completions.create(
 3. Paste into the custom instructions field
 4. Apply
 
-### 15. Amazon Q Developer
+</details>
+
+<details>
+<summary><strong>🟡 15. Amazon Q Developer</strong></summary>
 
 **File**: `universal/system-prompt.txt`
 
@@ -375,7 +519,10 @@ response = client.chat.completions.create(
 2. Open the Amazon Q extension settings in your IDE
 3. Paste into the customization/instructions field
 
-### 16. Windsurf / Codeium
+</details>
+
+<details>
+<summary><strong>🟡 16. Windsurf / Codeium</strong></summary>
 
 **File**: `universal/system-prompt.txt`
 
@@ -383,7 +530,10 @@ response = client.chat.completions.create(
 2. Open Windsurf settings
 3. Paste into the custom instructions / rules section
 
-### 17. Any LLM API (Ollama, LM Studio, vLLM, etc.)
+</details>
+
+<details>
+<summary><strong>🔵 17. Any LLM API (Ollama, LM Studio, vLLM, etc.)</strong></summary>
 
 **File**: `universal/system-prompt.json`
 
@@ -396,9 +546,34 @@ curl http://localhost:11434/v1/chat/completions \
        | jq '.messages += [{"role": "user", "content": "Your prompt"}]')"
 ```
 
+</details>
+
 ---
 
-## Quick Start
+## 🚀 Quick Start
+
+<div align="center">
+
+```mermaid
+flowchart TD
+    A["🚀 Choose your setup method"] --> B{"Want it<br/>everywhere?"}
+    B -->|"Yes"| C["bash setup-global.sh"]
+    B -->|"Per-project"| D{"Which tools?"}
+    D -->|"All of them"| E["bash setup.sh"]
+    D -->|"Just one"| F["Copy the specific file"]
+    C --> G["✅ Done! Works in all projects"]
+    E --> H["✅ Done! 10 files created"]
+    F --> H
+
+    style A fill:#3b82f6,color:#fff
+    style C fill:#22c55e,color:#fff
+    style E fill:#22c55e,color:#fff
+    style F fill:#22c55e,color:#fff
+    style G fill:#10b981,color:#fff
+    style H fill:#10b981,color:#fff
+```
+
+</div>
 
 ### Option 0: Global install (once, works everywhere)
 
@@ -443,7 +618,7 @@ bash setup.sh
 cd your-project && curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/main/setup.sh | bash
 ```
 
-### Tool Compatibility Matrix
+### 📋 Tool Compatibility Matrix
 
 | Tool | File | Auto-Loaded | Format |
 |---|---|---|---|
@@ -465,13 +640,13 @@ cd your-project && curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anth
 | **Windsurf** | `universal/system-prompt.txt` | No (paste) | Plain text |
 | **Any LLM API** | `universal/system-prompt.json` | No (code) | JSON |
 
-### Running openclaude locally
+### 🔗 Running openclaude locally
 
 If you run [Gitlawb/openclaude](https://github.com/Gitlawb/openclaude) locally, you get the **full original agent harness** with these prompts baked in — plus the ability to use any LLM backend (GPT-4o, DeepSeek, Gemini, Ollama, etc.).
 
 ---
 
-## Repo Structure
+## 🗂️ Repo Structure
 
 ```
 anthropic-instructions/
@@ -499,6 +674,27 @@ anthropic-instructions/
 
 ---
 
-## License
+## 📄 License
 
 MIT
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if it helped you get the direct route ⭐**
+
+<br>
+
+Made with the leaked truth from Anthropic's own source code.
+
+<br>
+
+[![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-000?logo=github&logoColor=fff)](#1-vs-code--github-copilot)
+[![Claude](https://img.shields.io/badge/Claude-6B4FBB?logo=anthropic&logoColor=fff)](#4-claude-code)
+[![Cursor](https://img.shields.io/badge/Cursor-00D1FF?logo=cursor&logoColor=000)](#5-cursor)
+[![ChatGPT](https://img.shields.io/badge/ChatGPT-74aa9c?logo=openai&logoColor=fff)](#10-chatgpt-web-ui)
+[![Gemini](https://img.shields.io/badge/Gemini-8E75B2?logo=google&logoColor=fff)](#12-google-gemini-api)
+[![Grok](https://img.shields.io/badge/Grok-000?logo=x&logoColor=fff)](#13-grok--xai-api)
+
+</div>
