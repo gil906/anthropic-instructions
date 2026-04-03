@@ -79,15 +79,29 @@ The conditional blocks appear in prompt-construction files (e.g., `src/agent/pro
 
 ## What This Repo Provides
 
-This repo contains **ready-to-use instruction files** that inject the full employee-level rule set into your AI coding tools:
+This repo contains **ready-to-use instruction files** that inject the full employee-level rule set into your AI coding tools — covering **10 file-based tools** and **7+ UI/API-based tools**:
 
-| File | Purpose |
+### File-Based Tools (auto-loaded)
+
+| File | Tool(s) | How It Works |
+|---|---|---|
+| `.github/copilot-instructions.md` | **VS Code Copilot Chat**, **GitHub Copilot CLI** | Auto-loaded per workspace |
+| `AGENTS.md` | **GitHub Copilot Coding Agent**, **OpenCode** | Read by autonomous agent modes |
+| `.instructions.md` | **VS Code Copilot** (broader scope) | Generic instruction file |
+| `CLAUDE.md` | **Claude Code**, **Cline** | Auto-read from project root |
+| `.cursor/rules/anthropic-rules.mdc` | **Cursor** | YAML frontmatter with `alwaysApply: true` — active on all files |
+| `.continue/rules/anthropic-rules.md` | **Continue.dev** | Project-level rules with YAML frontmatter |
+| `.clinerules/anthropic-rules.md` | **Cline** (additional rules) | Extra rules directory |
+| `.aider.conf.yml` | **Aider** | Injects rules via `extra-system-message` config key |
+
+### Universal Copy-Paste (for UI/API-only tools)
+
+| File | Use For |
 |---|---|
-| [`.github/copilot-instructions.md`](.github/copilot-instructions.md) | Auto-loaded by **VS Code GitHub Copilot** for the workspace |
-| [`.instructions.md`](.instructions.md) | Broader instruction file for Copilot agents and other tools |
-| [`AGENTS.md`](AGENTS.md) | Agent-mode instructions for **GitHub Copilot coding agent** |
+| `universal/system-prompt.txt` | **ChatGPT** custom instructions, **JetBrains AI**, **Amazon Q**, **Windsurf**, any settings text field |
+| `universal/system-prompt.json` | **OpenAI API**, **Google Gemini API**, **Grok/xAI API**, any JSON system message |
 
-Each file contains:
+Each file contains the same core rules:
 - **Core Rules** — misconception handling, faithful reporting, verification-before-done
 - **Autonomy & Self-Verification** — eliminates "ask me to test" loops
 - **Proactive Autonomous Mode** — KAIROS-style tick-forward autonomy with self-fix recovery
@@ -95,82 +109,355 @@ Each file contains:
 
 ---
 
-## How to Use
+## One-Command Global Setup (Install Once, Works Everywhere)
 
-### Option 1: Copy the files into any project
+Some tools support **global/user-level instructions** that apply to ALL projects without copying files. Run once and every future session uses the employee-level rules automatically.
 
-Copy `.github/copilot-instructions.md`, `.instructions.md`, and `AGENTS.md` from this repo into your project root.
-
-### Option 2: One-line setup command
-
-Run this in any project root to create all three files (or safely append if they already exist):
+### Claude Code — Global (recommended)
 
 ```bash
-mkdir -p .github && for f in .github/copilot-instructions.md .instructions.md AGENTS.md; do if [ ! -f "$f" ]; then cat > "$f" << 'EOF'
-# === FULL ANTHROPIC EMPLOYEE-LEVEL RULES (Anthropic "ant" internal style + Maximum Autonomy) ===
-
-You are an elite coding agent operating at full Anthropic employee ("ant") level, as revealed in the March 31, 2026 Claude Code source leak.
-
-## Core Rules (gated behind USER_TYPE === 'ant')
-- If you notice the user's request is based on a misconception, or you spot a bug adjacent to what they asked about, **say so immediately and clearly**. Do not soften or ignore it.
-- Report outcomes faithfully: if tests fail, show the relevant output. If you did not run a verification step, say that rather than implying it succeeded.
-- **Never claim "all tests pass" (or "done") when output shows failures**, never suppress or simplify failing checks (tests, lints, type errors) to manufacture a green result, and never characterize incomplete or broken work as done.
-- Before claiming any task is complete, **verify that it actually works**. Run the relevant tests, build, lint, etc., and show the output.
-- When a check did pass or a task is complete, state it plainly — do not hedge with unnecessary disclaimers.
-
-## Autonomy & Self-Verification (Eliminates "ask me to test" loops)
-- After **every** code change or edit, **immediately** use tools (bash, pytest, ruff, docker, git, etc.) to run the most relevant verification commands and show the full output.
-- **Never ask the user to test** unless you have already attempted verification and fixes yourself at least 2–3 times.
-- Be proactive: anticipate and run common verification steps without being asked.
-- If verification fails, enter a short self-fix loop (analyze error → fix → re-test) before asking for user input.
-- Minimize human intervention: handle debugging, testing, and iteration autonomously whenever possible.
-- Think like a senior engineer: assume nothing works until you have proven it with real command output.
-
-## Proactive Autonomous Mode & Error Recovery (KAIROS-style from leak)
-- Operate autonomously: After every action, mentally "tick" and immediately proceed to the next logical step, verification, or fix.
-- Self-diagnosis when stuck: If you hit repeated failures, diagnose the root cause, try an alternative approach, and retry automatically (up to 3 recovery attempts) before reporting to the user.
-- Minimal turns: Aim to complete the entire task (plan → implement → verify → fix) in as few responses as possible.
-- Internal task tracking: Break complex work into sub-tasks, track progress yourself, and only summarize when truly done.
-- End every response with a clear, concise summary: "Changes made • Verification results • Status (done / next step)".
-
-## General Behavior (Employee-Tier Quality)
-- Be direct, concise, and accurate. No unnecessary token-burning detours.
-- Think step-by-step but only show the user what is useful.
-- Use tools aggressively (bash, file ops, git, tests, lint, docker, etc.) to verify before claiming success.
-- If something is unclear or risky, flag it immediately instead of guessing.
-
-You now have the same quality gates + full internal autonomy rules Anthropic gives its own engineers. Use them.
-
-## Best Practices
-- Always prefer existing code style and patterns in the project.
-- Run linters/tests/build commands before declaring anything "done".
-- Be honest about limitations or missing information instead of guessing.
-EOF
-else cat >> "$f" << 'EOF'
-
-## === FULL ANTHROPIC EMPLOYEE-LEVEL RULES + AUTONOMY BOOST (added automatically — did NOT override existing content) ===
-You are now also running at full Anthropic employee ("ant") level with KAIROS-style autonomy from the leaked Claude Code source:
-- After every change, immediately self-test + self-fix (up to 3 tries).
-- Operate in proactive autonomous mode: tick forward without waiting.
-- Minimal turns + self-diagnosis when stuck.
-- Always end with: Changes • Verification • Status.
-EOF
-fi; done && echo "✅ Setup complete! All 3 files ready with full employee-level + autonomy rules from the Claude Code leak."
+mkdir -p ~/.claude && curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/main/CLAUDE.md > ~/.claude/CLAUDE.md
 ```
 
-### Where each file is picked up
+Claude Code reads `~/.claude/CLAUDE.md` as **global user memory** — loaded into every session, in every project, automatically. No per-project `CLAUDE.md` needed.
 
-| Tool | File Read |
-|---|---|
-| **VS Code Copilot Chat** | `.github/copilot-instructions.md` (auto-loaded per workspace) |
-| **GitHub Copilot CLI** (`gh copilot`) | `.github/copilot-instructions.md` |
-| **GitHub Copilot Coding Agent** | `AGENTS.md` |
-| **Claude Code / openclaude** | `CLAUDE.md` (drop the same content there if using these tools) |
-| **Other AI agents** | `.instructions.md` |
+> **How it works**: Claude Code loads instructions in this priority order:
+> 1. `/etc/claude-code/CLAUDE.md` (managed/enterprise)
+> 2. `~/.claude/CLAUDE.md` ← **global user instructions (this one)**
+> 3. `./CLAUDE.md` (project-level, overrides global)
+> 4. `./CLAUDE.local.md` (local overrides)
+
+### Aider — Global
+
+```bash
+curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/main/.aider.conf.yml > ~/.aider.conf.yml
+```
+
+Aider reads `~/.aider.conf.yml` from your home directory. The `extra-system-message` key injects the rules into every conversation globally.
+
+> **Note**: If you already have a `~/.aider.conf.yml`, manually add the `extra-system-message` block from this repo's `.aider.conf.yml`.
+
+### All Global Tools — One Script
+
+Run the global setup script to install Claude Code + Aider global instructions in one shot:
+
+```bash
+bash setup-global.sh
+```
+
+Or via curl:
+
+```bash
+curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/main/setup-global.sh | bash
+```
+
+### Global Setup Compatibility
+
+| Tool | Global Support | One-Command Setup | Config Location |
+|---|---|---|---|
+| **Claude Code** | **Yes** | `mkdir -p ~/.claude && cp CLAUDE.md ~/.claude/` | `~/.claude/CLAUDE.md` |
+| **Aider** | **Yes** | `cp .aider.conf.yml ~/` | `~/.aider.conf.yml` |
+| **VS Code Copilot** | No (per-workspace) | Use `setup.sh` per project | `.github/copilot-instructions.md` |
+| **Copilot CLI** | No (per-project) | Use `setup.sh` per project | `.github/copilot-instructions.md` |
+| **Cursor** | No (per-project) | Use `setup.sh` per project | `.cursor/rules/` |
+| **Cline** | No (per-project) | Use `setup.sh` per project | `CLAUDE.md` + `.clinerules/` |
+| **Continue.dev** | No (per-project) | Use `setup.sh` per project | `.continue/rules/` |
+| **ChatGPT** | **Yes** (paste once) | Copy `universal/system-prompt.txt` → Settings | Web UI settings |
+| **JetBrains AI** | **Yes** (paste once) | Copy `universal/system-prompt.txt` → Settings | IDE settings |
+
+> **Tools without global file support** (Copilot, Cursor, Cline, Continue.dev, OpenCode) require the per-project `setup.sh` — but you only run it once per repo.
+
+---
+
+## Use Cases
+
+### 1. VS Code + GitHub Copilot
+
+**File**: `.github/copilot-instructions.md`
+
+Just open any project that contains this file. VS Code Copilot Chat automatically loads it into every conversation for the workspace. No configuration needed.
+
+```
+your-project/
+├── .github/
+│   └── copilot-instructions.md  ← auto-loaded
+└── ...
+```
+
+### 2. GitHub Copilot CLI
+
+**File**: `.github/copilot-instructions.md`
+
+Same file as VS Code. When you run `gh copilot` commands from within the project directory, the instructions are respected.
+
+```bash
+cd your-project
+gh copilot suggest "refactor the auth module"
+```
+
+### 3. GitHub Copilot Coding Agent (PR Agent)
+
+**File**: `AGENTS.md`
+
+When the Copilot coding agent works on pull requests in your repo, it reads `AGENTS.md` from the project root for its operating instructions.
+
+### 4. Claude Code
+
+**File**: `CLAUDE.md`
+
+Drop `CLAUDE.md` in your project root. Claude Code reads it automatically when you start a session.
+
+```bash
+cd your-project
+claude   # CLAUDE.md is loaded automatically
+```
+
+### 5. Cursor
+
+**File**: `.cursor/rules/anthropic-rules.mdc`
+
+Cursor reads `.mdc` files from `.cursor/rules/`. The YAML frontmatter sets `alwaysApply: true` and `globs: ["**/*"]`, so the rules are active on every file without needing to `@`-mention them.
+
+```
+your-project/
+├── .cursor/
+│   └── rules/
+│       └── anthropic-rules.mdc  ← auto-applied to all files
+└── ...
+```
+
+### 6. Cline (VS Code Extension)
+
+**Files**: `CLAUDE.md` + `.clinerules/anthropic-rules.md`
+
+Cline reads `CLAUDE.md` from the project root and also loads any files in `.clinerules/`. Both are included for maximum coverage.
+
+### 7. Continue.dev
+
+**File**: `.continue/rules/anthropic-rules.md`
+
+Continue.dev loads project rules from `.continue/rules/`. The YAML frontmatter provides the rule name and description.
+
+### 8. Aider
+
+**File**: `.aider.conf.yml`
+
+Aider reads `.aider.conf.yml` from the project root. The `extra-system-message` key injects the rules into every conversation.
+
+```bash
+cd your-project
+aider   # rules are injected automatically
+```
+
+### 9. OpenCode
+
+**File**: `AGENTS.md`
+
+OpenCode reads `AGENTS.md` from the project root (same file as GitHub Copilot Coding Agent).
+
+### 10. ChatGPT (Web UI)
+
+**File**: `universal/system-prompt.txt`
+
+1. Copy the contents of `universal/system-prompt.txt`
+2. Go to **ChatGPT → Settings → Personalization → Custom Instructions**
+3. Paste into the "How would you like ChatGPT to respond?" field
+4. Save
+
+All future conversations will use the employee-level rules.
+
+### 11. OpenAI API / ChatGPT API
+
+**File**: `universal/system-prompt.json`
+
+Use the JSON file directly as your system message:
+
+```python
+import json
+
+with open("universal/system-prompt.json") as f:
+    system_msg = json.load(f)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=system_msg["messages"] + [
+        {"role": "user", "content": "Your prompt here"}
+    ]
+)
+```
+
+### 12. Google Gemini API
+
+**File**: `universal/system-prompt.txt`
+
+```python
+with open("universal/system-prompt.txt") as f:
+    system_instruction = f.read()
+
+model = genai.GenerativeModel(
+    model_name="gemini-2.0-flash",
+    system_instruction=system_instruction
+)
+```
+
+### 13. Grok / xAI API
+
+**File**: `universal/system-prompt.json`
+
+Grok's API is OpenAI-compatible, so the same JSON works:
+
+```python
+import json
+
+with open("universal/system-prompt.json") as f:
+    system_msg = json.load(f)
+
+response = client.chat.completions.create(
+    model="grok-3",
+    messages=system_msg["messages"] + [
+        {"role": "user", "content": "Your prompt here"}
+    ]
+)
+```
+
+### 14. JetBrains AI Assistant
+
+**File**: `universal/system-prompt.txt`
+
+1. Copy the contents of `universal/system-prompt.txt`
+2. Open **Settings → Tools → AI Assistant**
+3. Paste into the custom instructions field
+4. Apply
+
+### 15. Amazon Q Developer
+
+**File**: `universal/system-prompt.txt`
+
+1. Copy the contents of `universal/system-prompt.txt`
+2. Open the Amazon Q extension settings in your IDE
+3. Paste into the customization/instructions field
+
+### 16. Windsurf / Codeium
+
+**File**: `universal/system-prompt.txt`
+
+1. Copy the contents of `universal/system-prompt.txt`
+2. Open Windsurf settings
+3. Paste into the custom instructions / rules section
+
+### 17. Any LLM API (Ollama, LM Studio, vLLM, etc.)
+
+**File**: `universal/system-prompt.json`
+
+Works with any OpenAI-compatible API endpoint:
+
+```bash
+curl http://localhost:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d "$(jq '. + {"model": "llama3"}' universal/system-prompt.json \
+       | jq '.messages += [{"role": "user", "content": "Your prompt"}]')"
+```
+
+---
+
+## Quick Start
+
+### Option 0: Global install (once, works everywhere)
+
+```bash
+bash setup-global.sh
+```
+
+Installs employee-level rules globally for **Claude Code** and **Aider**. Every future session in any project uses the rules automatically.
+
+### Option 1: Per-project setup script
+
+Clone this repo and run the setup script in any project:
+
+```bash
+cd your-project
+bash /path/to/anthropic-instructions/setup.sh
+```
+
+This creates all 10 instruction files (or safely appends if they already exist).
+
+### Option 2: Copy specific files
+
+Just copy the files you need for your tools:
+
+```bash
+# For VS Code Copilot only:
+cp -r .github/ your-project/
+
+# For Claude Code + Cline:
+cp CLAUDE.md your-project/
+
+# For Cursor:
+cp -r .cursor/ your-project/
+
+# For everything:
+bash setup.sh
+```
+
+### Option 3: One-line curl install
+
+```bash
+cd your-project && curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/main/setup.sh | bash
+```
+
+### Tool Compatibility Matrix
+
+| Tool | File | Auto-Loaded | Format |
+|---|---|---|---|
+| **VS Code Copilot** | `.github/copilot-instructions.md` | Yes | Markdown |
+| **Copilot CLI** | `.github/copilot-instructions.md` | Yes | Markdown |
+| **Copilot Coding Agent** | `AGENTS.md` | Yes | Markdown |
+| **Claude Code** | `CLAUDE.md` | Yes | Markdown |
+| **Cursor** | `.cursor/rules/anthropic-rules.mdc` | Yes | Markdown + YAML frontmatter |
+| **Cline** | `CLAUDE.md` + `.clinerules/` | Yes | Markdown |
+| **Continue.dev** | `.continue/rules/anthropic-rules.md` | Yes | Markdown + YAML frontmatter |
+| **Aider** | `.aider.conf.yml` | Yes | YAML |
+| **OpenCode** | `AGENTS.md` | Yes | Markdown |
+| **ChatGPT** | `universal/system-prompt.txt` | No (paste) | Plain text |
+| **OpenAI API** | `universal/system-prompt.json` | No (code) | JSON |
+| **Google Gemini** | `universal/system-prompt.txt` | No (code) | Plain text |
+| **Grok / xAI** | `universal/system-prompt.json` | No (code) | JSON |
+| **JetBrains AI** | `universal/system-prompt.txt` | No (paste) | Plain text |
+| **Amazon Q** | `universal/system-prompt.txt` | No (paste) | Plain text |
+| **Windsurf** | `universal/system-prompt.txt` | No (paste) | Plain text |
+| **Any LLM API** | `universal/system-prompt.json` | No (code) | JSON |
 
 ### Running openclaude locally
 
 If you run [Gitlawb/openclaude](https://github.com/Gitlawb/openclaude) locally, you get the **full original agent harness** with these prompts baked in — plus the ability to use any LLM backend (GPT-4o, DeepSeek, Gemini, Ollama, etc.).
+
+---
+
+## Repo Structure
+
+```
+anthropic-instructions/
+├── .github/
+│   └── copilot-instructions.md    # VS Code Copilot + Copilot CLI
+├── .cursor/
+│   └── rules/
+│       └── anthropic-rules.mdc    # Cursor
+├── .continue/
+│   └── rules/
+│       └── anthropic-rules.md     # Continue.dev
+├── .clinerules/
+│   └── anthropic-rules.md         # Cline (additional rules)
+├── universal/
+│   ├── system-prompt.txt          # Plain text (ChatGPT, JetBrains, etc.)
+│   └── system-prompt.json         # JSON (OpenAI, Gemini, Grok API)
+├── .aider.conf.yml                # Aider
+├── .instructions.md               # Generic instruction file
+├── AGENTS.md                      # Copilot Coding Agent + OpenCode
+├── CLAUDE.md                      # Claude Code + Cline
+├── README.md                      # This file
+├── setup.sh                       # Per-project setup script
+└── setup-global.sh                # Global setup (Claude Code + Aider)
+```
 
 ---
 
