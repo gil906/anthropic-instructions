@@ -41,11 +41,12 @@
 
 ---
 
-## Background
+## 📖 Background
 
 On March 31, 2026, Anthropic accidentally shipped an npm source map in Claude Code v2.1.88, exposing ~512k lines of TypeScript — the full source of their coding agent. The leak revealed a **two-tier prompt system**: employees (detected via `process.env.USER_TYPE === 'ant'`) receive cleaner, more honest, and more autonomous instructions, while regular users get a longer, more defensive, token-heavier path.
 
-Think of it like a taxi ride: employees get the **direct route**; regular users get routed through detours that burn more tokens and produce softer, less useful output.
+> [!NOTE]
+> Think of it like a taxi ride: employees get the **direct route**; regular users get routed through detours that burn more tokens and produce softer, less useful output.
 
 This repo packages the **employee-tier rules** so you can inject them into any AI coding tool and get the same direct, high-quality experience.
 
