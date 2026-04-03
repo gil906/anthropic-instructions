@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="280" viewBox="0 0 800 280">
+  <defs>
+    <linearGradient id="bg-k" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e1b4b"/>
+    </linearGradient>
+    <marker id="arr-b" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6366f1"/>
+    </marker>
+    <marker id="arr-g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#22c55e"/>
+    </marker>
+    <marker id="arr-y" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#f59e0b"/>
+    </marker>
+    <marker id="arr-r" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#ef4444"/>
+    </marker>
+    <filter id="node-glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="280" rx="16" fill="url(#bg-k)"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="16" fill="#94a3b8">
+    KAIROS Autonomous Loop — Self-Verify → Self-Fix → Retry
+  </text>
+
+  <!-- Nodes -->
+  <!-- Task -->
+  <rect x="20" y="100" width="100" height="44" rx="22" fill="#3b82f6" filter="url(#node-glow)">
+    <animate attributeName="opacity" values="0.85;1;0.85" dur="3s" repeatCount="indefinite"/>
+  </rect>
+  <text x="70" y="127" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="13" fill="#fff">🎯 Task</text>
+
+  <!-- Plan -->
+  <rect x="155" y="100" width="100" height="44" rx="22" fill="#8b5cf6">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" begin="0.3s" repeatCount="indefinite"/>
+  </rect>
+  <text x="205" y="127" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="13" fill="#fff">📝 Plan</text>
+
+  <!-- Implement -->
+  <rect x="290" y="100" width="120" height="44" rx="22" fill="#6366f1">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+  </rect>
+  <text x="350" y="127" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="13" fill="#fff">⚡ Implement</text>
+
+  <!-- Self-Verify (diamond-like with rounded rect) -->
+  <rect x="445" y="90" width="130" height="64" rx="10" fill="#fbbf24" stroke="#f59e0b" stroke-width="2">
+    <animate attributeName="stroke-width" values="2;4;2" dur="2s" repeatCount="indefinite"/>
+  </rect>
+  <text x="510" y="127" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="13" fill="#1e1b4b">🔍 Self-Verify</text>
+
+  <!-- Done -->
+  <rect x="625" y="55" width="100" height="44" rx="22" fill="#22c55e" filter="url(#node-glow)">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+  </rect>
+  <text x="675" y="82" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="13" fill="#fff">🏆 Done</text>
+
+  <!-- Self-Fix -->
+  <rect x="610" y="165" width="115" height="44" rx="22" fill="#f59e0b">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="2.5s" begin="0.5s" repeatCount="indefinite"/>
+  </rect>
+  <text x="667" y="192" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="13" fill="#1e1b4b">🔧 Self-Fix</text>
+
+  <!-- Ask User -->
+  <rect x="625" y="230" width="130" height="40" rx="20" fill="#ef4444">
+    <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+  </rect>
+  <text x="690" y="255" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="12" fill="#fff">🙋 Ask User</text>
+
+  <!-- Animated connecting lines -->
+  <!-- Task → Plan -->
+  <line x1="120" y1="122" x2="155" y2="122" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr-b)" stroke-dasharray="6,3">
+    <animate attributeName="stroke-dashoffset" values="18;0" dur="0.8s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- Plan → Implement -->
+  <line x1="255" y1="122" x2="290" y2="122" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr-b)" stroke-dasharray="6,3">
+    <animate attributeName="stroke-dashoffset" values="18;0" dur="0.8s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- Implement → Self-Verify -->
+  <line x1="410" y1="122" x2="445" y2="122" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arr-b)" stroke-dasharray="6,3">
+    <animate attributeName="stroke-dashoffset" values="18;0" dur="0.8s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- Self-Verify → Done (pass) -->
+  <line x1="575" y1="105" x2="625" y2="82" stroke="#22c55e" stroke-width="3" marker-end="url(#arr-g)" stroke-dasharray="6,3">
+    <animate attributeName="stroke-dashoffset" values="18;0" dur="0.6s" repeatCount="indefinite"/>
+  </line>
+  <text x="605" y="80" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#22c55e" font-weight="700">
+    ✅ Pass
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- Self-Verify → Self-Fix (fail) -->
+  <line x1="575" y1="140" x2="625" y2="175" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arr-r)" stroke-dasharray="6,3">
+    <animate attributeName="stroke-dashoffset" values="18;0" dur="0.8s" repeatCount="indefinite"/>
+  </line>
+  <text x="615" y="155" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#ef4444" font-weight="700">
+    ❌ Fail
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- Self-Fix → Implement (retry loop) - curved path -->
+  <path d="M 610,187 C 480,187 430,180 350,144" fill="none" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arr-y)" stroke-dasharray="8,4">
+    <animate attributeName="stroke-dashoffset" values="24;0" dur="1.2s" repeatCount="indefinite"/>
+  </path>
+  <text x="480" y="178" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#f59e0b" font-weight="700">
+    retry
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- Self-Fix → Ask User (3 failures) -->
+  <line x1="667" y1="209" x2="690" y2="230" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-r)" stroke-dasharray="4,2">
+    <animate attributeName="stroke-dashoffset" values="12;0" dur="0.8s" repeatCount="indefinite"/>
+  </line>
+  <text x="720" y="222" font-family="Segoe UI, Arial, sans-serif" font-size="10" fill="#ef4444">3 failures</text>
+</svg>

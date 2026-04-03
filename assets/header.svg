@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f23">
+        <animate attributeName="stop-color" values="#0f0f23;#1a1a3e;#0f0f23" dur="4s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#1a1a3e">
+        <animate attributeName="stop-color" values="#1a1a3e;#2d1b69;#1a1a3e" dur="4s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#2d1b69">
+        <animate attributeName="stop-color" values="#2d1b69;#0f0f23;#2d1b69" dur="4s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a78bfa">
+        <animate attributeName="stop-color" values="#a78bfa;#60a5fa;#34d399;#a78bfa" dur="6s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#60a5fa">
+        <animate attributeName="stop-color" values="#60a5fa;#34d399;#a78bfa;#60a5fa" dur="6s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#34d399">
+        <animate attributeName="stop-color" values="#34d399;#a78bfa;#60a5fa;#34d399" dur="6s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    <linearGradient id="lock-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24">
+        <animate attributeName="stop-color" values="#fbbf24;#f59e0b;#fbbf24" dur="2s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#f59e0b">
+        <animate attributeName="stop-color" values="#f59e0b;#fbbf24;#f59e0b" dur="2s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="lock-shadow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Animated background -->
+  <rect width="800" height="200" rx="16" fill="url(#bg)"/>
+
+  <!-- Floating particles -->
+  <circle cx="100" cy="50" r="2" fill="#a78bfa" opacity="0.4">
+    <animate attributeName="cy" values="50;30;50" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0.8;0.4" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="250" cy="150" r="1.5" fill="#60a5fa" opacity="0.3">
+    <animate attributeName="cy" values="150;130;150" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="550" cy="40" r="2.5" fill="#34d399" opacity="0.3">
+    <animate attributeName="cy" values="40;20;40" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="700" cy="120" r="1.8" fill="#fbbf24" opacity="0.3">
+    <animate attributeName="cy" values="120;100;120" dur="2.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="2.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="400" cy="170" r="2" fill="#a78bfa" opacity="0.2">
+    <animate attributeName="cy" values="170;150;170" dur="3.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="650" cy="60" r="1.5" fill="#60a5fa" opacity="0.25">
+    <animate attributeName="cy" values="60;45;60" dur="4.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Lock icon with glow -->
+  <g transform="translate(330, 45)" filter="url(#lock-shadow)">
+    <text font-size="50" fill="url(#lock-glow)" text-anchor="middle" x="70" y="45">🔓</text>
+    <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- Main title -->
+  <text x="400" y="125" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="800" font-size="32" fill="url(#text-gradient)" filter="url(#glow)">
+    Anthropic Employee-Level Instructions
+  </text>
+
+  <!-- Subtitle with fade-in -->
+  <text x="400" y="158" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-weight="400" font-size="15" fill="#94a3b8">
+    For Any AI Coding Agent — Everywhere
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- Animated bottom line -->
+  <line x1="200" y1="180" x2="600" y2="180" stroke="url(#text-gradient)" stroke-width="2" opacity="0.5">
+    <animate attributeName="x1" values="200;250;200" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="x2" values="600;550;600" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite"/>
+  </line>
+</svg>

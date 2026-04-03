@@ -1,8 +1,6 @@
 <div align="center">
 
-# 🔓 Anthropic Employee-Level Instructions
-
-### For Any AI Coding Agent — Everywhere
+<img src="assets/header.svg" alt="Anthropic Employee-Level Instructions" width="800"/>
 
 <br>
 
@@ -19,21 +17,47 @@
 
 <br>
 
-```
-╔══════════════════════════════════════════════════════════════╗
-║                                                              ║
-║   Regular User Path        vs      Employee ("ant") Path     ║
-║                                                              ║
-║   🚕 Longer route                  🏎️  Direct route          ║
-║   💬 More hedging                  ✅ Honest & direct         ║
-║   🔄 "Can you test?"              🔧 Self-verifies           ║
-║   ❌ May fake "tests pass"         📊 Faithful reporting      ║
-║   🐌 Token-heavy detours           ⚡ Minimal turns           ║
-║                                                              ║
-╚══════════════════════════════════════════════════════════════╝
-```
+<table align="center">
+<tr>
+<td align="center" colspan="3"><h3>🚕 Regular User Path &nbsp;&nbsp; vs &nbsp;&nbsp; 🏎️ Employee ("ant") Path</h3></td>
+</tr>
+<tr>
+<td align="center" width="280">
 
-**This repo gives you the direct route.**
+**❌ Regular Users Get**
+
+🚕 Longer, token-heavy route<br>
+💬 Hedging & soft language<br>
+🔄 "Can you test this for me?"<br>
+❌ May fake "all tests pass"<br>
+🐌 Unnecessary detours<br>
+
+</td>
+<td align="center" width="60">
+
+**→**<br>**→**<br>**→**<br>**→**<br>**→**
+
+</td>
+<td align="center" width="280">
+
+**✅ Employees Get**
+
+🏎️ Direct, minimal-token route<br>
+✅ Honest & direct answers<br>
+🔧 Self-verifies automatically<br>
+📊 Faithful failure reporting<br>
+⚡ Minimal turns to completion<br>
+
+</td>
+</tr>
+<tr>
+<td align="center" colspan="3">
+
+**This repo gives you the employee path. ↗️**
+
+</td>
+</tr>
+</table>
 
 </div>
 
@@ -58,7 +82,7 @@ The leaked source gates three major instruction blocks behind `USER_TYPE === 'an
 
 ```mermaid
 graph LR
-    A[USER_TYPE check] -->|"=== 'ant'"| B["🟢 Employee Path"]
+    A["🔍 USER_TYPE check"] -->|"=== 'ant'"| B["🟢 Employee Path"]
     A -->|"!== 'ant'"| C["🔴 Regular Path"]
     B --> D["✅ Misconception Handling"]
     B --> E["✅ Faithful Reporting"]
@@ -69,17 +93,31 @@ graph LR
     C --> J["❌ Skips verification"]
     C --> K["❌ Asks user to test"]
 
-    style B fill:#22c55e,color:#fff
-    style C fill:#ef4444,color:#fff
-    style D fill:#86efac
-    style E fill:#86efac
-    style F fill:#86efac
-    style G fill:#86efac
-    style H fill:#fca5a5
-    style I fill:#fca5a5
-    style J fill:#fca5a5
-    style K fill:#fca5a5
+    style A fill:#6366f1,color:#fff,stroke:#4f46e5,stroke-width:3px
+    style B fill:#22c55e,color:#fff,stroke:#16a34a,stroke-width:3px
+    style C fill:#ef4444,color:#fff,stroke:#dc2626,stroke-width:3px
+    style D fill:#86efac,color:#14532d,stroke:#22c55e,stroke-width:2px
+    style E fill:#86efac,color:#14532d,stroke:#22c55e,stroke-width:2px
+    style F fill:#86efac,color:#14532d,stroke:#22c55e,stroke-width:2px
+    style G fill:#86efac,color:#14532d,stroke:#22c55e,stroke-width:2px
+    style H fill:#fca5a5,color:#7f1d1d,stroke:#ef4444,stroke-width:2px
+    style I fill:#fca5a5,color:#7f1d1d,stroke:#ef4444,stroke-width:2px
+    style J fill:#fca5a5,color:#7f1d1d,stroke:#ef4444,stroke-width:2px
+    style K fill:#fca5a5,color:#7f1d1d,stroke:#ef4444,stroke-width:2px
+
+    linkStyle 0 stroke:#22c55e,stroke-width:3px
+    linkStyle 1 stroke:#ef4444,stroke-width:3px
+    linkStyle 2,3,4,5 stroke:#22c55e,stroke-width:2px
+    linkStyle 6,7,8,9 stroke:#ef4444,stroke-width:2px
 ```
+
+<details>
+<summary>🎬 <strong>View animated version</strong></summary>
+<br>
+<div align="center">
+<img src="assets/user-type-flow.svg" alt="USER_TYPE Flow — Animated" width="800"/>
+</div>
+</details>
 
 ### 🎯 1. Misconception Handling
 > *"If you notice the user's request is based on a misconception, or spot a bug adjacent to what they asked about, say so."*
@@ -100,19 +138,36 @@ The internal version includes **KAIROS-style** autonomous operation:
 
 ```mermaid
 flowchart LR
-    A["🎯 Task"] --> B["📝 Plan"]
-    B --> C["⚡ Implement"]
-    C --> D["🔍 Self-Verify"]
-    D -->|Pass| E["✅ Done"]
-    D -->|Fail| F["🔧 Self-Fix"]
-    F --> C
-    F -->|"3 failures"| G["🙋 Ask User"]
+    A(["🎯 Task"]) --> B(["📝 Plan"])
+    B --> C(["⚡ Implement"])
+    C --> D{"🔍 Self-Verify"}
+    D -->|"✅ Pass"| E(["🏆 Done"])
+    D -->|"❌ Fail"| F(["🔧 Self-Fix"])
+    F -->|"retry"| C
+    F -->|"3 failures"| G(["🙋 Ask User"])
 
-    style A fill:#3b82f6,color:#fff
-    style E fill:#22c55e,color:#fff
-    style F fill:#f59e0b,color:#fff
-    style G fill:#ef4444,color:#fff
+    style A fill:#3b82f6,color:#fff,stroke:#2563eb,stroke-width:3px
+    style B fill:#8b5cf6,color:#fff,stroke:#7c3aed,stroke-width:2px
+    style C fill:#6366f1,color:#fff,stroke:#4f46e5,stroke-width:2px
+    style D fill:#fbbf24,color:#1e1b4b,stroke:#f59e0b,stroke-width:3px
+    style E fill:#22c55e,color:#fff,stroke:#16a34a,stroke-width:3px
+    style F fill:#f59e0b,color:#1e1b4b,stroke:#d97706,stroke-width:2px
+    style G fill:#ef4444,color:#fff,stroke:#dc2626,stroke-width:3px
+
+    linkStyle 0,1,2 stroke:#6366f1,stroke-width:2px
+    linkStyle 3 stroke:#22c55e,stroke-width:3px
+    linkStyle 4 stroke:#ef4444,stroke-width:3px
+    linkStyle 5 stroke:#f59e0b,stroke-width:2px,stroke-dasharray:5
+    linkStyle 6 stroke:#ef4444,stroke-width:2px
 ```
+
+<details>
+<summary>🎬 <strong>View animated version</strong></summary>
+<br>
+<div align="center">
+<img src="assets/kairos-loop.svg" alt="KAIROS Autonomous Loop — Animated" width="800"/>
+</div>
+</details>
 
 - After every action, the agent mentally "ticks" and immediately proceeds to the next step
 - Self-diagnosis on failure with up to **3 automatic recovery attempts**
@@ -123,7 +178,7 @@ flowchart LR
 > [!WARNING]
 > Other internal-only features include **Undercover Mode** (hiding AI identity when contributing to open-source) and lighter-gated model variants for internal use.
 
----
+<div align="center"><img src="assets/wave-divider.svg" width="100%"/></div>
 
 ## 📦 Related Repositories
 
@@ -165,23 +220,49 @@ This repo contains **ready-to-use instruction files** that inject the full emplo
 
 <div align="center">
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    ⚡ Supported Tools ⚡                         │
-├─────────────────┬──────────────────┬────────────────────────────┤
-│  🟢 Auto-Loaded │  🟡 Paste Once   │  🔵 API / Code             │
-├─────────────────┼──────────────────┼────────────────────────────┤
-│  VS Code Copilot│  ChatGPT         │  OpenAI API                │
-│  Copilot CLI    │  JetBrains AI    │  Google Gemini API         │
-│  Copilot Agent  │  Amazon Q        │  Grok / xAI API            │
-│  Claude Code    │  Windsurf        │  Ollama / LM Studio        │
-│  Cursor         │                  │  Any OpenAI-compatible     │
-│  Cline          │                  │                            │
-│  Continue.dev   │                  │                            │
-│  Aider          │                  │                            │
-│  OpenCode       │                  │                            │
-└─────────────────┴──────────────────┴────────────────────────────┘
-```
+<table align="center">
+<tr>
+<td align="center" colspan="3"><h3>⚡ Supported Tools</h3></td>
+</tr>
+<tr>
+<td align="center" valign="top" width="220">
+
+**🟢 Auto-Loaded**<br><sub>Drop file → it works</sub>
+
+VS Code Copilot<br>
+Copilot CLI<br>
+Copilot Agent<br>
+Claude Code<br>
+Cursor<br>
+Cline<br>
+Continue.dev<br>
+Aider<br>
+OpenCode
+
+</td>
+<td align="center" valign="top" width="180">
+
+**🟡 Paste Once**<br><sub>Copy → Settings → Done</sub>
+
+ChatGPT<br>
+JetBrains AI<br>
+Amazon Q<br>
+Windsurf
+
+</td>
+<td align="center" valign="top" width="220">
+
+**🔵 API / Code**<br><sub>Use as system message</sub>
+
+OpenAI API<br>
+Google Gemini API<br>
+Grok / xAI API<br>
+Ollama / LM Studio<br>
+Any OpenAI-compatible
+
+</td>
+</tr>
+</table>
 
 </div>
 
@@ -214,7 +295,7 @@ Each file contains the same core rules:
 > | ⚡ **Proactive Autonomous Mode** | KAIROS-style tick-forward autonomy with self-fix recovery |
 > | 📋 **Best Practices** | Language-agnostic quality standards |
 
----
+<div align="center"><img src="assets/wave-divider.svg" width="100%"/></div>
 
 ## 🌐 One-Command Global Setup (Install Once, Works Everywhere)
 
@@ -222,28 +303,32 @@ Some tools support **global/user-level instructions** that apply to ALL projects
 
 <div align="center">
 
-```
-              ┌──────────────────────┐
-              │  bash setup-global.sh │
-              └──────────┬───────────┘
-                         │
-              ┌──────────┴───────────┐
-              │                      │
-        ┌─────▼──────┐      ┌───────▼───────┐
-        │ Claude Code │      │    Aider      │
-        │ ~/.claude/  │      │ ~/.aider.conf │
-        │ CLAUDE.md   │      │ .yml          │
-        └─────┬──────┘      └───────┬───────┘
-              │                      │
-              ▼                      ▼
-     ┌────────────────┐    ┌────────────────┐
-     │ ✅ ALL projects │    │ ✅ ALL sessions │
-     │   use rules     │    │   use rules     │
-     │   automatically │    │   automatically │
-     └────────────────┘    └────────────────┘
+```mermaid
+flowchart TD
+    A["🖥️ bash setup-global.sh"] --> B["🟣 Claude Code"]
+    A --> C["🟢 Aider"]
+    B --> D["~/.claude/CLAUDE.md"]
+    C --> E["~/.aider.conf.yml"]
+    D --> F["✅ ALL projects use rules automatically"]
+    E --> F
+
+    style A fill:#6366f1,color:#fff,stroke:#4f46e5,stroke-width:3px
+    style B fill:#8b5cf6,color:#fff,stroke:#7c3aed,stroke-width:2px
+    style C fill:#22c55e,color:#fff,stroke:#16a34a,stroke-width:2px
+    style D fill:#c4b5fd,color:#1e1b4b
+    style E fill:#bbf7d0,color:#14532d
+    style F fill:#fbbf24,color:#1e1b4b,stroke:#f59e0b,stroke-width:3px
 ```
 
 </div>
+
+<details>
+<summary>🎬 <strong>View animated version</strong></summary>
+<br>
+<div align="center">
+<img src="assets/global-setup-flow.svg" alt="Global Setup Flow — Animated" width="800"/>
+</div>
+</details>
 
 ### Claude Code — Global (recommended)
 
@@ -299,7 +384,7 @@ curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anthropic-instructions/
 
 > **Tools without global file support** (Copilot, Cursor, Cline, Continue.dev, OpenCode) require the per-project `setup.sh` — but you only run it once per repo.
 
----
+<div align="center"><img src="assets/wave-divider.svg" width="100%"/></div>
 
 ## 📖 Use Cases
 
@@ -548,7 +633,7 @@ curl http://localhost:11434/v1/chat/completions \
 
 </details>
 
----
+<div align="center"><img src="assets/wave-divider.svg" width="100%"/></div>
 
 ## 🚀 Quick Start
 
@@ -556,24 +641,39 @@ curl http://localhost:11434/v1/chat/completions \
 
 ```mermaid
 flowchart TD
-    A["🚀 Choose your setup method"] --> B{"Want it<br/>everywhere?"}
-    B -->|"Yes"| C["bash setup-global.sh"]
-    B -->|"Per-project"| D{"Which tools?"}
-    D -->|"All of them"| E["bash setup.sh"]
-    D -->|"Just one"| F["Copy the specific file"]
-    C --> G["✅ Done! Works in all projects"]
-    E --> H["✅ Done! 10 files created"]
+    A(["🚀 Choose your setup"]) --> B{"Want it<br/>everywhere?"}
+    B -->|"✅ Yes"| C(["bash setup-global.sh"])
+    B -->|"📁 Per-project"| D{"Which tools?"}
+    D -->|"🔥 All of them"| E(["bash setup.sh"])
+    D -->|"🎯 Just one"| F(["Copy the specific file"])
+    C --> G(["🏆 Done! Works in ALL projects"])
+    E --> H(["🏆 Done! 10 files created"])
     F --> H
 
-    style A fill:#3b82f6,color:#fff
-    style C fill:#22c55e,color:#fff
-    style E fill:#22c55e,color:#fff
-    style F fill:#22c55e,color:#fff
-    style G fill:#10b981,color:#fff
-    style H fill:#10b981,color:#fff
+    style A fill:#6366f1,color:#fff,stroke:#4f46e5,stroke-width:3px
+    style B fill:#fbbf24,color:#1e1b4b,stroke:#f59e0b,stroke-width:3px
+    style C fill:#22c55e,color:#fff,stroke:#16a34a,stroke-width:2px
+    style D fill:#fbbf24,color:#1e1b4b,stroke:#f59e0b,stroke-width:2px
+    style E fill:#22c55e,color:#fff,stroke:#16a34a,stroke-width:2px
+    style F fill:#22c55e,color:#fff,stroke:#16a34a,stroke-width:2px
+    style G fill:#10b981,color:#fff,stroke:#059669,stroke-width:3px
+    style H fill:#10b981,color:#fff,stroke:#059669,stroke-width:3px
+
+    linkStyle 0 stroke:#6366f1,stroke-width:2px
+    linkStyle 1 stroke:#22c55e,stroke-width:3px
+    linkStyle 2 stroke:#f59e0b,stroke-width:2px
+    linkStyle 3,4 stroke:#22c55e,stroke-width:2px
 ```
 
 </div>
+
+<details>
+<summary>🎬 <strong>View animated version</strong></summary>
+<br>
+<div align="center">
+<img src="assets/quickstart-flow.svg" alt="Quick Start Flow — Animated" width="800"/>
+</div>
+</details>
 
 ### Option 0: Global install (once, works everywhere)
 
@@ -644,7 +744,7 @@ cd your-project && curl -sL https://raw.githubusercontent.com/YOUR_USERNAME/anth
 
 If you run [Gitlawb/openclaude](https://github.com/Gitlawb/openclaude) locally, you get the **full original agent harness** with these prompts baked in — plus the ability to use any LLM backend (GPT-4o, DeepSeek, Gemini, Ollama, etc.).
 
----
+<div align="center"><img src="assets/wave-divider.svg" width="100%"/></div>
 
 ## 🗂️ Repo Structure
 
